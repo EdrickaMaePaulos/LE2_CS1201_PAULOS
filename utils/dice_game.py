@@ -28,7 +28,7 @@ class DiceGame:
   def save_scores(self):
     with open("data/history.txt", "w") as file:
       for score in self.scores:
-        file.write(f"{score.username:10} | {score.game_id:10} | {score.points:10} | {score.wins}\n")
+        file.write(f"{score.username:15} | {score.game_id:15} | {score.points:15} | {score.wins}\n")
 
   def play_game(self):
     if not self.recent_User:
@@ -47,11 +47,12 @@ class DiceGame:
       CPU_score = 0
       rounds = 0
 
-      while rounds <= 3:
+      while rounds < 3:
         dice1 = randint(1,6) #users
         dice2 = randint(1,6) #CPU
         print(f"\n{player_username} rolled: {dice1}")
         print(f"CPU rolled: {dice2}")
+
         if dice1 > dice2:
           print(f"WINNER: {player_username}")
           user_score += 1
@@ -61,10 +62,11 @@ class DiceGame:
           CPU_score += 1
         else:
           print("It's a tie!")
+          continue
         rounds += 1
       print("=" * 50)
         
-      if user_score >=2:
+      if user_score >= 2:
         print(f"\n{player_username} won stage {stage}!")
         recent_score.points += 3
         recent_score.wins += 1
@@ -72,9 +74,11 @@ class DiceGame:
         if choice == 0:
            break
         stage += 1
-      else: 
-        print("\nCPU won this stage.")
+      elif CPU_score >= 2: 
+        print("\nGAME OVER! CPU won this stage.")
         break
+      else:
+        print(f"Stage {stage} terminated.")
 
     if recent_score.points > 0 and recent_score.wins > 0:
       self.scores.append(recent_score)
@@ -82,6 +86,7 @@ class DiceGame:
       print(f"{player_username}, Your score has been recorded. ")
     else:
       print(f"{player_username} you didn't score any points in the previous game. ") 
+
     print(f"\n{player_username}:")
     print(f"\t Total Points: {recent_score.points}")
     print(f"\t Wins: {recent_score.wins}")      
@@ -94,7 +99,7 @@ class DiceGame:
       print("No Record yet.")
     else:
       for i, score in enumerate(sorted_scores[:10]):
-        print(f"{i+1}. {score.username:10} | {score.game_id:10} | Points: {score.points:10} | Wins: {score.wins:10}")
+        print(f"{i+1}. {score.username:15} | {score.game_id:15} | Points: {score.points:15} | Wins: {score.wins:15}")
   
   def logout(self):
     if self.recent_User:
